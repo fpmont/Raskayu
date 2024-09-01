@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagen Aleatoria con Opciones</title>
+    <style>
+        @font-face 
+        {
+            font-family: 'habanost'; /* Nombre de la fuente */
+            src: url('font/habanost.otf') format('opentype'); /* Ruta al archivo .otf */
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
+        body
+            {
+                font-family: 'habanost';
+                background: linear-gradient(to bottom, 
+                                #FFD700,  /* Amarillo (Gold) */
+                                #FFA500,  /* Naranja */
+                                #FF4500,  /* Naranja más oscuro (OrangeRed) */
+                                #FF0000); /* Rojo */                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+             
+        .logo
+            {
+                position: absolute;
+                top: 3%;
+                left: 20%;
+                width: 60%;
+                height:25vh;
+                
+            }
+
+        .logo img 
+            {
+                width: 100%; /* Hace que la imagen sea responsiva */
+                height: 100%; /* Mantiene la proporción original de la imagen */
+            }
+        .rasca
+            {
+                position:relative;
+                width: 90%;
+                height: 30%;
+                margin-top: 20%;
+            }
+        .rasca img 
+            {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        .overlay 
+            {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 2;
+                cursor: pointer;
+                touch-action: none;
+            }
+        .mensaje 
+            {
+                
+                margin-top:10%; /* Separación entre el div rasca y el div mensaje */
+                color: rgb(0, 0, 0);
+                font-size: 26px;
+                text-align: center;
+                
+            }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="img/logo.png" alt="Logo">
+    </div>
+    <div class="rasca">
+        <img id="randomImage" src="" alt="">
+        <canvas class="overlay"></canvas>
+    </div>
+    <div class="mensaje">
+        <h3>
+            ¡Raska y Gana (o Pierde), con la peña Raskayú!
+        </h3>
+    </div>
+    <script>
+        const canvas = document.querySelector('.overlay');
+        const ctx = canvas.getContext('2d');
+        const img = document.querySelector('#randomImage');
+
+         // Lista de imágenes
+         const images = [
+            'img/prueba.png',
+            'img/prueba2.png',
+            'img/prueba3.png',
+            'img/prueba4.png'
+        ];
+
+         // Elegir una imagen aleatoria
+         const randomImage = images[Math.floor(Math.random() * images.length)];
+        img.src = randomImage;
+
+        // Ajustar el tamaño del canvas al tamaño del contenedor
+        canvas.width = img.clientWidth;
+        canvas.height = img.clientHeight;
+
+        // Llenar el canvas con un color sólido (capa de raspado)
+        ctx.fillStyle = 'gray';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let isDrawing = false;
+
+function getCoords(e) {
+    let x, y;
+    if (e.type.startsWith('touch')) {
+        const touch = e.touches[0];
+        x = touch.clientX;
+        y = touch.clientY;
+    } else {
+        x = e.clientX;
+        y = e.clientY;
+    }
+    return { x, y };
+}
+
+function startDrawing(e) {
+    isDrawing = true;
+    e.preventDefault();
+}
+
+function stopDrawing(e) {
+    isDrawing = false;
+    e.preventDefault();
+}
+
+function draw(e) {
+    if (!isDrawing) return;
+
+    const { x, y } = getCoords(e);
+    const rect = canvas.getBoundingClientRect();
+    const canvasX = x - rect.left;
+    const canvasY = y - rect.top;
+
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(canvasX, canvasY, 20, 0, Math.PI * 2, false);
+    ctx.fill();
+    e.preventDefault();
+}
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mousemove', draw);
+
+canvas.addEventListener('touchstart', startDrawing);
+canvas.addEventListener('touchend', stopDrawing);
+canvas.addEventListener('touchmove', draw);
+    </script>
+</body>
+     
+</html>
