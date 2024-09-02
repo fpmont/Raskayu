@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Raska de Raskayu! - Cristo'24</title>
+    <title>Imagen Aleatoria con Opciones</title>
     <style>
         @font-face 
         {
@@ -76,6 +76,16 @@
                 text-align: center;
                 
             }
+
+        .alerta 
+            {
+                
+                margin-top:5%; /* Separación entre el div rasca y el div mensaje */
+                color: rgb(0, 0, 0);
+                font-size: 14px;
+                text-align: center;
+                
+            }
     </style>
 </head>
 <body>
@@ -91,6 +101,12 @@
             ¡Raska y Gana (o Pierde), con la peña Raskayú!
         </h3>
     </div>
+
+    <div class="alerta">
+        <h5>
+            El raska solo sera valido bajo la supervisión de un miembro de la peña Raskayú.
+        </h5>
+    </div>
     <script>
         const canvas = document.querySelector('.overlay');
         const ctx = canvas.getContext('2d');
@@ -98,10 +114,14 @@
 
          // Lista de imágenes
          const images = [
-            'img/prueba.png',
-            'img/prueba2.png',
-            'img/prueba3.png',
-            'img/prueba4.png'
+            'img/premio1.png',
+            'img/premio2.png',
+            'img/premio3.png',
+            'img/premio4.png',
+            'img/premio5.png',
+            'img/premio6.png',
+            'img/premio7.png',
+            'img/premio8.png'
         ];
 
          // Elegir una imagen aleatoria
